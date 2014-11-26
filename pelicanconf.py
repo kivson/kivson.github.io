@@ -22,8 +22,8 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Blogroll
-#LINKS = (('Pelican', 'http://getpelican.com/'),
-#         ('Python.org', 'http://python.org/'),
+# LINKS = (('Pelican', 'http://getpelican.com/'),
+# ('Python.org', 'http://python.org/'),
 #         ('Jinja2', 'http://jinja.pocoo.org/'),
 #         ('You can modify those links in your config file', '#'),)
 
@@ -31,10 +31,10 @@ AUTHOR_FEED_RSS = None
 
 
 SOCIAL = (
-          ('github', 'https://github.com/kivson', 'github'),
-          ('Twitter', 'https://twitter.com/kivson','twitter'),
-          #('Linkedin', 'https://br.linkedin.com/pub/kivson-andrade/30/589/a78/'),
-          )
+    ('github', 'https://github.com/kivson', 'github'),
+    ('Twitter', 'https://twitter.com/kivson', 'twitter'),
+    #('Linkedin', 'https://br.linkedin.com/pub/kivson-andrade/30/589/a78/'),
+)
 
 DEFAULT_PAGINATION = 10
 
@@ -49,12 +49,11 @@ THEME = './themes/pelican-elegant-master/'
 PLUGIN_PATHS = ["plugins", "./plugins"]
 PLUGINS = ['sitemap', 'extract_toc', 'tipue_search']
 MD_EXTENSIONS = ['codehilite(css_class=highlight)', 'extra', 'headerid', 'toc']
-DIRECT_TEMPLATES = (('index', 'tags', 'categories','archives', 'search', '404'))
+DIRECT_TEMPLATES = (('index', 'tags', 'categories', 'archives', 'search', '404'))
 STATIC_PATHS = ['theme/images', 'images']
 TAG_SAVE_AS = ''
 CATEGORY_SAVE_AS = ''
 AUTHOR_SAVE_AS = ''
-
 
 SITEMAP = {
     'format': 'xml',
@@ -70,25 +69,25 @@ SITEMAP = {
     }
 }
 
-
 TYPOGRIFY = True
 
-
 LANDING_PAGE_ABOUT = {
-  "title": "Uma frase",
-  "details":
-"""
-Teste
-"""
-  }
+    "title": "Programação, Python, Web Crawling, IA, entre outros.",
+    "details":
+    "Sou Kivson Andrade, criei esse blog para compartilhar informações relacionados com "
+    "desenvolvimento. Minha linguagem favoria é Python. "
+    "Gosto de Linux, trabalho com Windows para viver. "
+    "Desenho e treino Kung-fu, leio ficção."
+
+}
 
 PROJECTS = [{
-    'name': 'SSaldo',
-    'url': 'https://play.google.com/store/apps/details?id=br.com.kivson.ssaldo',
-    'description': 'Aplicativo para exibir saldo e extrato de cartões alimentação e refeição que extrai os dados de um site usando um \
-      leitor de captcha.'},
-    #{'name': 'Elegant Theme for Pelican',
-    #'url': 'http://oncrashreboot.com/pelican-elegant',
-    #'description': 'A clean and distraction free theme, with search and a'
-    #' lot more unique features, using Jinja2 and Bootstrap'},
-    ]
+                'name': 'SSaldo',
+                'url': 'https://play.google.com/store/apps/details?id=br.com.kivson.ssaldo',
+                'description':  'Aplicativo para exibir saldo e extrato de cartões alimentação e refeição. '
+                                'Extrai os dados de um site usando um leitor de captcha.'},
+            #{'name': 'Elegant Theme for Pelican',
+            #'url': 'http://oncrashreboot.com/pelican-elegant',
+            #'description': 'A clean and distraction free theme, with search and a'
+            #' lot more unique features, using Jinja2 and Bootstrap'},
+]
