@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt"
+>
+<head>
+    <title>Quebrando o captcha das enquetes da Câmara (parte 1) - Kivson's Log</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="http://localhost:8000/posts/2014/11/quebrando-o-captcha-das-enquetes-da-camara-parte-1/">
+
+        <meta name="author" content="Kivson Andrade" />
+        <meta name="keywords" content="captcha,orc,python" />
+        <meta name="description" content="Você, como qualquer pessoa, detesta ter que digitar captchas. Elas existem com o suposto pretexto de impedir que softwares automatizados executem ações que degradam a qualidade de um serviço, porém, com isso, eles impedem que outros sistemas façam tarefas automatizadas que facilitem sua vida. Mesmo que esses sistemas não degradem ..." />
+
+        <meta property="og:site_name" content="Kivson's Log" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Quebrando o captcha das enquetes da Câmara (parte 1)"/>
+        <meta property="og:url" content="http://localhost:8000/posts/2014/11/quebrando-o-captcha-das-enquetes-da-camara-parte-1/"/>
+        <meta property="og:description" content="Você, como qualquer pessoa, detesta ter que digitar captchas. Elas existem com o suposto pretexto de impedir que softwares automatizados executem ações que degradam a qualidade de um serviço, porém, com isso, eles impedem que outros sistemas façam tarefas automatizadas que facilitem sua vida. Mesmo que esses sistemas não degradem ..."/>
+        <meta property="article:published_time" content="2014-11-27" />
+            <meta property="article:section" content="Python" />
+            <meta property="article:tag" content="captcha" />
+            <meta property="article:tag" content="orc" />
+            <meta property="article:tag" content="python" />
+            <meta property="article:author" content="Kivson Andrade" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="http://localhost:8000/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://localhost:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link href="http://localhost:8000/theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="http://localhost:8000/theme/css/typogrify.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://localhost:8000/theme/css/style.css" type="text/css"/>
+
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://localhost:8000/" class="navbar-brand">
+<img src="http://localhost:8000/images/LOGO_BLOG.png" width="30"/> Kivson's Log            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><span>
+                <form class="navbar-search" action="/search">
+                  <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+              </li>
+              <li><a href="http://localhost:8000/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="http://localhost:8000/posts/2014/11/quebrando-o-captcha-das-enquetes-da-camara-parte-1/"
+                       rel="bookmark"
+                       title="Permalink to Quebrando o captcha das enquetes da Câmara (parte 1)">
+                        Quebrando o captcha das enquetes da Câmara (parte&nbsp;1)
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2014-11-27T14:47:06.296155-03:00"> 27 Nov, 2014</time>
+    </span>
+
+        <span class="label label-default">Category</span>
+        <a href="http://localhost:8000/category/python.html">Python</a>
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://localhost:8000/tag/captcha.html">captcha</a>
+        /
+	<a href="http://localhost:8000/tag/orc.html">orc</a>
+        /
+	<a href="http://localhost:8000/tag/python.html">python</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>Você, como qualquer pessoa, detesta ter que digitar <a href="http://www.wikiwand.com/pt/CAPTCHA">captchas</a>. Elas existem com o suposto pretexto de impedir que softwares automatizados executem ações que degradam a qualidade de um serviço, porém, com isso, eles impedem que outros sistemas façam tarefas automatizadas que facilitem sua vida. Mesmo que esses sistemas não degradem performance&nbsp;alguma.</p>
+<p>O reconhecimento visual de caracteres se chama <a href="http://www.wikiwand.com/pt/Reconhecimento_%C3%B3tico_de_caracteres"><span class="caps">OCR</span></a>, é o que o scanner usa para transformar o documento que você escaneia em texto. Fazer o reconhecimento visual do captcha é mais difícil por que as imagens são distorcidas e obscurecidas para evitar esse tipo de técnica. Vou mostrar a baixo como construir um programa para a leitura automática de captchas, como exemplo vamos usar o captcha do <a href="http://www2.camara.leg.br/agencia-app/listaEnquete"><strong>site de enquetes da Câmara Federal</strong></a>, que ficou na mídia nas últimas semanas por causa da <a href="http://www2.camara.leg.br/agencia-app/votarEnquete/enquete/101CE64E-8EC3-436C-BB4A-457EBC94DF4E">enquete sobre o conceito de família</a>.</p>
+<p>Vale ressaltar que o conteúdo desse post é meramente acadêmico, e você não deve utiliza-lo para fazer coisas ruins, como maltratar&nbsp;gatinhos. </p>
+<h3>Quais os&nbsp;passos?</h3>
+<p>Para quebrar um captcha <del>você</del> seu programa vai precisar fazer <strong>três passos</strong>. Para o computador cada uma tem um grau natural de&nbsp;dificuldade:  </p>
+<ul>
+<li>Limpar o ruído da imagem (dificuldade <strong>média</strong>)</li>
+<li>Separa os caracteres (essa é a parte <strong>difícil</strong>)</li>
+<li>reconhecer cada caractere (bem <strong>fácil</strong>)</li>
+</ul>
+<h3>Primeiro, Limpando o&nbsp;ruído</h3>
+<p>Vamos usar como exemplo as seguintes imagens:<br />
+<img alt="img" src="http://localhost:8000/images/cap_vota/base/teste1.jpeg" />
+<img alt="img" src="http://localhost:8000/images/cap_vota/base/teste1.jpeg" />
+<img alt="img" src="http://localhost:8000/images/cap_vota/base/teste1.jpeg" />
+<img alt="img" src="http://localhost:8000/images/cap_vota/base/teste1.jpeg" /></p>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="https://github.com/kivson"><i class="fa fa-github-square fa-lg"></i> github</a></li>
+                <li class="list-group-item"><a href="https://twitter.com/kivson"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+              </ul>
+            </li>
+
+
+
+            <li class="list-group-item"><a href="http://localhost:8000/"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+                <ul class="list-group list-inline tagcloud" id="tags">
+                    <li class="list-group-item tag-4">
+                        <a href="http://localhost:8000/tag/captcha.html">
+                            captcha
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://localhost:8000/tag/orc.html">
+                            orc
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://localhost:8000/tag/python.html">
+                            python
+                        </a>
+                    </li>
+                </ul>
+            </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2014 Kivson Andrade
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>              <p><small>  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
+</small></p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="http://localhost:8000/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://localhost:8000/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="http://localhost:8000/theme/js/respond.min.js"></script>
+
+
+</body>
+</html>
