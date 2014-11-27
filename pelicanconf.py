@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 AUTHOR = u'Kivson Andrade'
 SITENAME = u"Kivson's Log"
 SITEURL = 'http://localhost:8000'
-
+DEFAULT_DATE = "fs"
 PATH = 'content'
 
 TIMEZONE = 'America/Cuiaba'
