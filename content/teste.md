@@ -5,7 +5,6 @@ Category: Python
 Tags: pelican, publishing
 Slug: my-super-post
 Authors: Kivson Andrade
-Summary: Short version for index and feeds
 
 
 Primeiro post de teste do Pelican
