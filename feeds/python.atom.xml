@@ -1,2 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Kivson's Log</title><link href="http://blog.kivson.com.br/" rel="alternate"></link><link href="http://blog.kivson.com.br/feeds/python.atom.xml" rel="self"></link><id>http://blog.kivson.com.br/</id><updated>2014-11-27T00:38:06-03:00</updated><entry><title>Quebrando o captcha das enquetes da Câmara (parte 1)</title><link href="http://blog.kivson.com.br/posts/2014/11/quebrando-o-captcha-das-enquetes-da-camara-parte-1/" rel="alternate"></link><updated>2014-11-27T00:38:06-03:00</updated><author><name>Kivson Andrade</name></author><id>tag:blog.kivson.com.br,2014-11-27:posts/2014/11/quebrando-o-captcha-das-enquetes-da-camara-parte-1/</id><summary type="html">&lt;p&gt;Em&amp;nbsp;construção&amp;#8230;&lt;/p&gt;</summary><category term="captcha"></category><category term="orc"></category><category term="python"></category></entry></feed>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Kivson's Log</title><link href="http://blog.kivson.com.br/" rel="alternate"></link><link href="http://blog.kivson.com.br/feeds/python.atom.xml" rel="self"></link><id>http://blog.kivson.com.br/</id><updated>2014-11-27T17:58:18-03:00</updated><entry><title>Quebrando o captcha das enquetes da Câmara (parte 1)</title><link href="http://blog.kivson.com.br/posts/2014/11/quebrando-o-captcha-das-enquetes-da-camara-parte-1/" rel="alternate"></link><updated>2014-11-27T17:58:18-03:00</updated><author><name>Kivson Andrade</name></author><id>tag:blog.kivson.com.br,2014-11-27:posts/2014/11/quebrando-o-captcha-das-enquetes-da-camara-parte-1/</id><summary type="html">&lt;p&gt;Você, como qualquer pessoa, detesta ter que digitar &lt;a href="http://www.wikiwand.com/pt/CAPTCHA"&gt;captchas&lt;/a&gt;. Elas existem com o suposto pretexto de impedir que softwares automatizados executem ações que degradam a qualidade de um serviço, porém, com isso, eles impedem que outros sistemas façam &lt;strong&gt;tarefas automatizadas&lt;/strong&gt; que facilitem sua vida. Mesmo que esses sistemas não degradem performance&amp;nbsp;alguma.&lt;/p&gt;
+&lt;p&gt;O reconhecimento visual de caracteres se chama &lt;a href="http://www.wikiwand.com/pt/Reconhecimento_%C3%B3tico_de_caracteres"&gt;&lt;span class="caps"&gt;OCR&lt;/span&gt;&lt;/a&gt;, é o que o scanner usa para transformar o documento que você escaneia em texto. Fazer o reconhecimento visual do captcha é mais difícil por que as imagens são distorcidas e obscurecidas para evitar esse tipo de técnica. Vou mostrar a baixo como construir um programa para a leitura automática de captchas, como exemplo vamos usar o captcha do &lt;a href="http://www2.camara.leg.br/agencia-app/listaEnquete"&gt;&lt;strong&gt;site de enquetes da Câmara Federal&lt;/strong&gt;&lt;/a&gt;, que ficou na mídia nas últimas semanas por causa da &lt;a href="http://www2.camara.leg.br/agencia-app/votarEnquete/enquete/101CE64E-8EC3-436C-BB4A-457EBC94DF4E"&gt;enquete sobre o conceito de família&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Vale ressaltar que o conteúdo desse post é meramente acadêmico, e você não deve utiliza-lo para fazer coisas ruins, como maltratar&amp;nbsp;gatinhos. &lt;/p&gt;
+&lt;h2 id="quais-os-passos"&gt;Quais os&amp;nbsp;passos?&lt;/h2&gt;
+&lt;p&gt;Para quebrar um captcha &lt;del&gt;você&lt;/del&gt; seu programa vai precisar fazer &lt;strong&gt;três passos&lt;/strong&gt;. Para o computador cada uma tem um grau natural de &lt;strong&gt;dificuldade&lt;/strong&gt;:  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Limpar o ruído da imagem (dificuldade &lt;strong&gt;média&lt;/strong&gt;)&lt;/li&gt;
+&lt;li&gt;Separa os caracteres (essa é a parte &lt;strong&gt;difícil&lt;/strong&gt;)&lt;/li&gt;
+&lt;li&gt;reconhecer cada caractere (bem &lt;strong&gt;fácil&lt;/strong&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="do-que-voce-precisa"&gt;Do que você&amp;nbsp;precisa?&lt;/h2&gt;
+&lt;p&gt;Você vai precisar do&amp;nbsp;seguinte:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.python.org/"&gt;Python&lt;/a&gt; - Interpretador da Linguagem&amp;nbsp;Python&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://python-pillow.github.io/"&gt;Pillow&lt;/a&gt; - Biblioteca para lidar com imagens em&amp;nbsp;Python&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://scikit-learn.org"&gt;Sklearn&lt;/a&gt; - Biblioteca para &lt;strong&gt;aprendizado de máquina&lt;/strong&gt; e &lt;strong&gt;inteligencia artificial&lt;/strong&gt; em&amp;nbsp;Python&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://scikit-image.org"&gt;Skimage&lt;/a&gt; - Biblioteca para &lt;strong&gt;processamento de&amp;nbsp;imagens&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Como base para as três últimas você vai precisa também do &lt;a href="http://www.numpy.org/"&gt;Numpy&lt;/a&gt; e &lt;a href="http://www.scipy.org/"&gt;SciPy&lt;/a&gt;. Mais informações para instalação, nos respectivos sites. Todas as bibliotecas tem uma excelente&amp;nbsp;documentação.&lt;/p&gt;
+&lt;h2 id="limpando-o-ruido"&gt;Limpando o&amp;nbsp;ruído&lt;/h2&gt;
+&lt;p&gt;Essa parte do processo é totalmente dependente do captcha com o qual se esta lidando.&lt;br /&gt;
+Algumas &lt;strong&gt;características da imagem podem facilitar&lt;/strong&gt; essa&amp;nbsp;atividade:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Plano de fundo&amp;nbsp;fixo&lt;/li&gt;
+&lt;li&gt;Cor da letras&amp;nbsp;fixas&lt;/li&gt;
+&lt;li&gt;Ausência de&amp;nbsp;distorções&lt;/li&gt;
+&lt;li&gt;Posição fixa das&amp;nbsp;letras&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Enfim, quanto mais &lt;strong&gt;características dinâmicas&lt;/strong&gt; a imagem tiver, mais difícil de&amp;nbsp;fazer.&lt;/p&gt;
+&lt;h3 id="implementacao"&gt;Implementação&lt;/h3&gt;
+&lt;p&gt;Vamos aos exemplos de&amp;nbsp;imagens:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="img" src="http://blog.kivson.com.br/images/cap_vota/base/teste1.jpeg" /&gt;
+&lt;img alt="img" src="http://blog.kivson.com.br/images/cap_vota/base/teste2.jpeg" /&gt;
+&lt;img alt="img" src="http://blog.kivson.com.br/images/cap_vota/base/teste3.jpeg" /&gt;
+&lt;img alt="img" src="http://blog.kivson.com.br/images/cap_vota/base/teste4.jpeg" /&gt;&lt;/p&gt;
+&lt;p&gt;Vamos ao&amp;nbsp;código:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;processa_img_teste&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="n"&gt;sem_linhas&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;remove_linhas&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imsave&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;testes/sem_linhas/teste&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;.jpeg&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sem_linhas&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;binaria&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;binariza&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sem_linhas&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imsave&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;testes/bin/teste&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;.bmp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;binaria&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;remove_linhas&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="c"&gt;#self.remove_linhas_thred=9&lt;/span&gt;
+    &lt;span class="n"&gt;filtro&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;amax&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;axis&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;amin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;axis&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;remove_linhas_thred&lt;/span&gt;
+
+    &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;filtro&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;255&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;filtro&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;255&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;filtro&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;255&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;img&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;binariza&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;median&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;axis&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;astype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;uint8&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ndimage&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;grey_dilation&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bin_dilatation&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;255&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;img&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Primeiro é feito a remoção das linhas pretas, bem como boa parte do plano de fundo, com o método &lt;code&gt;remove_linhas(self, img)&lt;/code&gt;. Nele foi feito um &lt;strong&gt;filtro&lt;/strong&gt; que para cada pixel pega a cor &lt;span class="caps"&gt;RGB&lt;/span&gt; de maior e a de menor intensidade, se a diferença entre essas cores for menor que certo limite ela é transformada em branco. Isso &lt;strong&gt;remove o preto e o cinza&lt;/strong&gt; que esta longe da cor das letras. O método  resulta nas&amp;nbsp;imagens:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="img" src="http://blog.kivson.com.br/images/cap_vota/sem_linhas/teste1.jpeg" /&gt;
+&lt;img alt="img" src="http://blog.kivson.com.br/images/cap_vota/sem_linhas/teste2.jpeg" /&gt;
+&lt;img alt="img" src="http://blog.kivson.com.br/images/cap_vota/sem_linhas/teste3.jpeg" /&gt;
+&lt;img alt="img" src="http://blog.kivson.com.br/images/cap_vota/sem_linhas/teste4.jpeg" /&gt;&lt;/p&gt;
+&lt;p&gt;Como eu cheguei nesse método?&amp;nbsp;Testando.&lt;/p&gt;
+&lt;p&gt;Depois disso, aplicado o método &lt;code&gt;binariza(self, img)&lt;/code&gt;. Nele a imagem é transformada em &lt;strong&gt;tons de cinza&lt;/strong&gt;. Depois é feita um &lt;a href="http://www.wikiwand.com/en/Dilation_(morphology)"&gt;&lt;strong&gt;dilatação morfológica&lt;/strong&gt;&lt;/a&gt;, que expande os pixels cinzas e pretos. Isso nem sempre é necessário, mas nesse caso tornou as imagens mais legíveis. Por fim ela é transforma em uma imagem &lt;strong&gt;preta e branca&lt;/strong&gt;. O&amp;nbsp;resultado:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="img" src="http://blog.kivson.com.br/images/cap_vota/binarizada/teste1.bmp" /&gt;
+&lt;img alt="img" src="http://blog.kivson.com.br/images/cap_vota/binarizada/teste2.bmp" /&gt;
+&lt;img alt="img" src="http://blog.kivson.com.br/images/cap_vota/binarizada/teste3.bmp" /&gt;
+&lt;img alt="img" src="http://blog.kivson.com.br/images/cap_vota/binarizada/teste4.bmp" /&gt;    &lt;/p&gt;
+&lt;p&gt;E é isso, a próxima parte continua com a segmentação da imagens em caracteres, a parte divertida&amp;nbsp;=)&lt;/p&gt;</summary><category term="captcha"></category><category term="orc"></category><category term="python"></category></entry></feed>

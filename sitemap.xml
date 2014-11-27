@@ -5,63 +5,63 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://blog.kivson.com.br/index.html</loc>
-<lastmod>2014-11-27T00:38:48-00:00</lastmod>
+<lastmod>2014-11-27T18:03:05-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://blog.kivson.com.br/archives.html</loc>
-<lastmod>2014-11-27T00:38:48-00:00</lastmod>
+<lastmod>2014-11-27T18:03:05-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://blog.kivson.com.br/categories.html</loc>
-<lastmod>2014-11-27T00:38:48-00:00</lastmod>
+<lastmod>2014-11-27T18:03:05-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://blog.kivson.com.br/posts/2014/11/quebrando-o-captcha-das-enquetes-da-camara-parte-1/</loc>
-<lastmod>2014-11-27T00:38:06-03:00</lastmod>
+<lastmod>2014-11-27T17:58:18-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://blog.kivson.com.br/category/python.html</loc>
-<lastmod>2014-11-27T00:38:06-03:44</lastmod>
+<lastmod>2014-11-27T17:58:18-03:44</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://blog.kivson.com.br/tag/python.html</loc>
-<lastmod>2014-11-27T00:38:06-03:44</lastmod>
+<lastmod>2014-11-27T17:58:18-03:44</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://blog.kivson.com.br/tag/captcha.html</loc>
-<lastmod>2014-11-27T00:38:06-03:44</lastmod>
+<lastmod>2014-11-27T17:58:18-03:44</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://blog.kivson.com.br/tag/orc.html</loc>
-<lastmod>2014-11-27T00:38:06-03:44</lastmod>
+<lastmod>2014-11-27T17:58:18-03:44</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://blog.kivson.com.br/author/kivson-andrade.html</loc>
-<lastmod>2014-11-27T00:38:06-03:44</lastmod>
+<lastmod>2014-11-27T17:58:18-03:44</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

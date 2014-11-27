@@ -14,13 +14,13 @@
 
         <meta name="author" content="Kivson Andrade" />
         <meta name="keywords" content="captcha,orc,python" />
-        <meta name="description" content="Em construção…" />
+        <meta name="description" content="Vou mostrar a baixo como construir um programa para a leitura automática de captchas, como exemplo vamos usar o captcha do site de enquetes da Câmara Federal =)" />
 
         <meta property="og:site_name" content="Kivson's Log" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Quebrando o captcha das enquetes da Câmara (parte 1)"/>
         <meta property="og:url" content="http://blog.kivson.com.br/posts/2014/11/quebrando-o-captcha-das-enquetes-da-camara-parte-1/"/>
-        <meta property="og:description" content="Em construção…"/>
+        <meta property="og:description" content="Vou mostrar a baixo como construir um programa para a leitura automática de captchas, como exemplo vamos usar o captcha do site de enquetes da Câmara Federal =)"/>
         <meta property="article:published_time" content="2014-11-27" />
             <meta property="article:section" content="Python" />
             <meta property="article:tag" content="captcha" />
@@ -94,7 +94,7 @@
 <footer class="post-info">
     <span class="label label-default">Date</span>
     <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2014-11-27T00:38:06.935825-03:00"> 27 Nov, 2014</time>
+        <i class="fa fa-calendar"></i><time datetime="2014-11-27T17:58:18.357944-03:00"> 27 Nov, 2014</time>
     </span>
 
         <span class="label label-default">Category</span>
@@ -110,7 +110,83 @@
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
-                <p>Em&nbsp;construção&#8230;</p>
+                <p>Você, como qualquer pessoa, detesta ter que digitar <a href="http://www.wikiwand.com/pt/CAPTCHA">captchas</a>. Elas existem com o suposto pretexto de impedir que softwares automatizados executem ações que degradam a qualidade de um serviço, porém, com isso, eles impedem que outros sistemas façam <strong>tarefas automatizadas</strong> que facilitem sua vida. Mesmo que esses sistemas não degradem performance&nbsp;alguma.</p>
+<p>O reconhecimento visual de caracteres se chama <a href="http://www.wikiwand.com/pt/Reconhecimento_%C3%B3tico_de_caracteres"><span class="caps">OCR</span></a>, é o que o scanner usa para transformar o documento que você escaneia em texto. Fazer o reconhecimento visual do captcha é mais difícil por que as imagens são distorcidas e obscurecidas para evitar esse tipo de técnica. Vou mostrar a baixo como construir um programa para a leitura automática de captchas, como exemplo vamos usar o captcha do <a href="http://www2.camara.leg.br/agencia-app/listaEnquete"><strong>site de enquetes da Câmara Federal</strong></a>, que ficou na mídia nas últimas semanas por causa da <a href="http://www2.camara.leg.br/agencia-app/votarEnquete/enquete/101CE64E-8EC3-436C-BB4A-457EBC94DF4E">enquete sobre o conceito de família</a>.</p>
+<p>Vale ressaltar que o conteúdo desse post é meramente acadêmico, e você não deve utiliza-lo para fazer coisas ruins, como maltratar&nbsp;gatinhos. </p>
+<h2 id="quais-os-passos">Quais os&nbsp;passos?</h2>
+<p>Para quebrar um captcha <del>você</del> seu programa vai precisar fazer <strong>três passos</strong>. Para o computador cada uma tem um grau natural de <strong>dificuldade</strong>:  </p>
+<ul>
+<li>Limpar o ruído da imagem (dificuldade <strong>média</strong>)</li>
+<li>Separa os caracteres (essa é a parte <strong>difícil</strong>)</li>
+<li>reconhecer cada caractere (bem <strong>fácil</strong>)</li>
+</ul>
+<h2 id="do-que-voce-precisa">Do que você&nbsp;precisa?</h2>
+<p>Você vai precisar do&nbsp;seguinte:</p>
+<ul>
+<li><a href="https://www.python.org/">Python</a> - Interpretador da Linguagem&nbsp;Python</li>
+<li><a href="http://python-pillow.github.io/">Pillow</a> - Biblioteca para lidar com imagens em&nbsp;Python</li>
+<li><a href="http://scikit-learn.org">Sklearn</a> - Biblioteca para <strong>aprendizado de máquina</strong> e <strong>inteligencia artificial</strong> em&nbsp;Python</li>
+<li><a href="http://scikit-image.org">Skimage</a> - Biblioteca para <strong>processamento de&nbsp;imagens</strong></li>
+</ul>
+<p>Como base para as três últimas você vai precisa também do <a href="http://www.numpy.org/">Numpy</a> e <a href="http://www.scipy.org/">SciPy</a>. Mais informações para instalação, nos respectivos sites. Todas as bibliotecas tem uma excelente&nbsp;documentação.</p>
+<h2 id="limpando-o-ruido">Limpando o&nbsp;ruído</h2>
+<p>Essa parte do processo é totalmente dependente do captcha com o qual se esta lidando.<br />
+Algumas <strong>características da imagem podem facilitar</strong> essa&nbsp;atividade:</p>
+<ul>
+<li>Plano de fundo&nbsp;fixo</li>
+<li>Cor da letras&nbsp;fixas</li>
+<li>Ausência de&nbsp;distorções</li>
+<li>Posição fixa das&nbsp;letras</li>
+</ul>
+<p>Enfim, quanto mais <strong>características dinâmicas</strong> a imagem tiver, mais difícil de&nbsp;fazer.</p>
+<h3 id="implementacao">Implementação</h3>
+<p>Vamos aos exemplos de&nbsp;imagens:</p>
+<p><img alt="img" src="http://blog.kivson.com.br/images/cap_vota/base/teste1.jpeg" />
+<img alt="img" src="http://blog.kivson.com.br/images/cap_vota/base/teste2.jpeg" />
+<img alt="img" src="http://blog.kivson.com.br/images/cap_vota/base/teste3.jpeg" />
+<img alt="img" src="http://blog.kivson.com.br/images/cap_vota/base/teste4.jpeg" /></p>
+<p>Vamos ao&nbsp;código:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">processa_img_teste</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+
+    <span class="n">sem_linhas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_linhas</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">io</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="s">&quot;testes/sem_linhas/teste&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.jpeg&quot;</span><span class="p">,</span> <span class="n">sem_linhas</span><span class="p">)</span>
+    <span class="n">binaria</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binariza</span><span class="p">(</span><span class="n">sem_linhas</span><span class="p">)</span>
+    <span class="n">io</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="s">&quot;testes/bin/teste&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;.bmp&quot;</span><span class="p">,</span> <span class="n">binaria</span><span class="p">)</span>
+    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">remove_linhas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+
+    <span class="c">#self.remove_linhas_thred=9</span>
+    <span class="n">filtro</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_linhas_thred</span>
+
+    <span class="n">img</span><span class="p">[</span><span class="n">filtro</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
+    <span class="n">img</span><span class="p">[</span><span class="n">filtro</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
+    <span class="n">img</span><span class="p">[</span><span class="n">filtro</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
+    <span class="k">return</span> <span class="n">img</span>
+
+<span class="k">def</span> <span class="nf">binariza</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+    <span class="n">img</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">grey_dilation</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bin_dilatation</span><span class="p">)</span>
+    <span class="n">img</span><span class="p">[</span><span class="n">img</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
+    <span class="n">img</span><span class="p">[</span><span class="n">img</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="n">img</span>
+</pre></div>
+
+
+<p>Primeiro é feito a remoção das linhas pretas, bem como boa parte do plano de fundo, com o método <code>remove_linhas(self, img)</code>. Nele foi feito um <strong>filtro</strong> que para cada pixel pega a cor <span class="caps">RGB</span> de maior e a de menor intensidade, se a diferença entre essas cores for menor que certo limite ela é transformada em branco. Isso <strong>remove o preto e o cinza</strong> que esta longe da cor das letras. O método  resulta nas&nbsp;imagens:</p>
+<p><img alt="img" src="http://blog.kivson.com.br/images/cap_vota/sem_linhas/teste1.jpeg" />
+<img alt="img" src="http://blog.kivson.com.br/images/cap_vota/sem_linhas/teste2.jpeg" />
+<img alt="img" src="http://blog.kivson.com.br/images/cap_vota/sem_linhas/teste3.jpeg" />
+<img alt="img" src="http://blog.kivson.com.br/images/cap_vota/sem_linhas/teste4.jpeg" /></p>
+<p>Como eu cheguei nesse método?&nbsp;Testando.</p>
+<p>Depois disso, aplicado o método <code>binariza(self, img)</code>. Nele a imagem é transformada em <strong>tons de cinza</strong>. Depois é feita um <a href="http://www.wikiwand.com/en/Dilation_(morphology)"><strong>dilatação morfológica</strong></a>, que expande os pixels cinzas e pretos. Isso nem sempre é necessário, mas nesse caso tornou as imagens mais legíveis. Por fim ela é transforma em uma imagem <strong>preta e branca</strong>. O&nbsp;resultado:</p>
+<p><img alt="img" src="http://blog.kivson.com.br/images/cap_vota/binarizada/teste1.bmp" />
+<img alt="img" src="http://blog.kivson.com.br/images/cap_vota/binarizada/teste2.bmp" />
+<img alt="img" src="http://blog.kivson.com.br/images/cap_vota/binarizada/teste3.bmp" />
+<img alt="img" src="http://blog.kivson.com.br/images/cap_vota/binarizada/teste4.bmp" />    </p>
+<p>E é isso, a próxima parte continua com a segmentação da imagens em caracteres, a parte divertida&nbsp;=)</p>
             </div>
             <!-- /.entry-content -->
     <hr/>
@@ -193,9 +269,9 @@
          <div class="col-xs-10">&copy; 2014 Kivson Andrade
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>              <p><small>  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>              <p><small>  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>
     Content
-  licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
+  licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
 </small></p>
          </div>
          <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
