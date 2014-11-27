@@ -21,4 +21,4 @@ DELETE_OUTPUT_DIRECTORY = True
 # Following items are often useful when publishing
 
 DISQUS_SITENAME = "blog-kivson"
-#GOOGLE_ANALYTICS = ""
+GOOGLE_ANALYTICS = "UA-53589986-3"
