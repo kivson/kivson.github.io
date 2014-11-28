@@ -4,63 +4,63 @@ xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitem
 xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
-<loc>http://localhost:8000/index.html</loc>
-<lastmod>2014-11-28T11:43:00-00:00</lastmod>
+<loc>http://blog.kivson.com.br/index.html</loc>
+<lastmod>2014-11-28T14:30:24-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://localhost:8000/archives.html</loc>
-<lastmod>2014-11-28T11:43:00-00:00</lastmod>
+<loc>http://blog.kivson.com.br/archives.html</loc>
+<lastmod>2014-11-28T14:30:24-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://localhost:8000/categories.html</loc>
-<lastmod>2014-11-28T11:43:00-00:00</lastmod>
+<loc>http://blog.kivson.com.br/categories.html</loc>
+<lastmod>2014-11-28T14:30:24-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://localhost:8000/posts/2014/11/quebrando-o-captcha-das-enquetes-da-camara-parte-1/</loc>
+<loc>http://blog.kivson.com.br/posts/2014/11/quebrando-o-captcha-das-enquetes-da-camara-parte-1/</loc>
 <lastmod>2014-11-27T17:58:18-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://localhost:8000/category/python.html</loc>
+<loc>http://blog.kivson.com.br/category/python.html</loc>
 <lastmod>2014-11-27T17:58:18-03:44</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://localhost:8000/tag/python.html</loc>
+<loc>http://blog.kivson.com.br/tag/python.html</loc>
 <lastmod>2014-11-27T17:58:18-03:44</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://localhost:8000/tag/captcha.html</loc>
+<loc>http://blog.kivson.com.br/tag/captcha.html</loc>
 <lastmod>2014-11-27T17:58:18-03:44</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://localhost:8000/tag/orc.html</loc>
+<loc>http://blog.kivson.com.br/tag/orc.html</loc>
 <lastmod>2014-11-27T17:58:18-03:44</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://localhost:8000/author/kivson-andrade.html</loc>
+<loc>http://blog.kivson.com.br/author/kivson-andrade.html</loc>
 <lastmod>2014-11-27T17:58:18-03:44</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
