@@ -54,7 +54,8 @@ THEME = './themes/pelican-bootstrap3/'
 PLUGIN_PATHS = ["plugins", "./plugins"]
 
 #PLUGINS = ['sitemap', 'extract_toc', 'tipue_search']
-#MD_EXTENSIONS = ['codehilite(css_class=highlight)', 'extra', 'headerid', 'toc']
+
+
 
 SITEMAP = {
     'format': 'xml',
@@ -72,6 +73,8 @@ SITEMAP = {
 
 TYPOGRIFY = True
 
+MD_EXTENSIONS = ['codehilite(css_class=highlight)', 'extra', 'headerid', 'toc',]
+
 
 DISPLAY_CATEGORIES_ON_MENU = False
 #BOOTSTRAP_NAVBAR_INVERSE = True
@@ -80,7 +83,7 @@ DISPLAY_TAGS_INLINE=True
 #SHOW_ARTICLE_AUTHOR =True
 SHOW_ARTICLE_CATEGORY=True
 
-CC_LICENSE = "CC-BY-SA"
+CC_LICENSE = "CC-BY"
 
 LOAD_CONTENT_CACHE = False
 PLUGINS = ['sitemap', 'tipue_search',]
