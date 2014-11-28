@@ -75,6 +75,7 @@ TYPOGRIFY = True
 
 MD_EXTENSIONS = ['codehilite(css_class=highlight)', 'extra', 'headerid', 'toc',]
 
+PYGMENTS_STYLE = 'monokai'
 
 DISPLAY_CATEGORIES_ON_MENU = False
 #BOOTSTRAP_NAVBAR_INVERSE = True
