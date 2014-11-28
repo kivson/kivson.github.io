@@ -71,6 +71,12 @@ SITEMAP = {
     }
 }
 
+#ABOUT_ME = "teste"
+
+#AVATAR = "images/LOGO_BLOG.png"
+
+FAVICON = 'images/favicon.ico'
+
 TYPOGRIFY = True
 
 MD_EXTENSIONS = ['codehilite(css_class=highlight)', 'extra', 'headerid', 'toc',]
